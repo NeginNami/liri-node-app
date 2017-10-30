@@ -2,6 +2,7 @@
 
 var Spotify = require('node-spotify-api');
 var Twitter = require('twitter');
+var request=require('request');
 
 var TwitterKeys=require("./keys.js");
 var SpotifyKeys=require("./keys.js");
@@ -62,6 +63,58 @@ console.log('------------------Data------------------------');
 
 }
 else if(commands[2]==="movie-this"){
+	var movieName;
+	if(process.argv[3]){
+
+		movieName=process.argv[3];
+		for (var i = 4; i < process.argv.length; i++) {
+			movieName=movieName+" "+process.argv[i];
+			console.log("Movie name u entered "+movieName);
+		}
+		request("http://www.omdbapi.com/?t="+movieName+"&y=&plot=short&apikey=40e9cece", function(error, response, body) {
+
+		  // If the request is successful (i.e. if the response status code is 200)
+		if (!error && response.statusCode === 200) {
+		console.log(JSON.parse(body));
+		
+		console.log("Title of the movie: "+JSON.parse(body).Title);
+		console.log("Release Date: "+JSON.parse(body).Year);
+		console.log("IMDB Rating: "+ JSON.parse(body).imdbRating);
+		if (JSON.parse(body).Ratings.length>1) 
+			console.log("Rotten Tomatoes Rating: "+JSON.parse(body).Ratings[1].Value);
+		else
+			console.log("Rotten Tomatoes Rating: Not availabe for this movie");
+		console.log("Country: "+JSON.parse(body).Country);
+		console.log("Language: "+JSON.parse(body).Language);
+		console.log("Plot: "+JSON.parse(body).Plot);
+		console.log("Actors: "+JSON.parse(body).Actors);
+
+  		}	
+		});
+	}
+	else{
+		movieName="Mr. Nobody";
+		request("http://www.omdbapi.com/?t="+movieName+"&y=&plot=short&apikey=40e9cece", function(error, response, body) {
+
+		  // If the request is successful (i.e. if the response status code is 200)
+		if (!error && response.statusCode === 200) {
+				console.log(JSON.parse(body));
+		
+			console.log("Title of the movie: "+JSON.parse(body).Title);
+			console.log("Release Date: "+JSON.parse(body).Year);
+			console.log("IMDB Rating: "+ JSON.parse(body).imdbRating);
+			if (JSON.parse(body).Ratings.length>1) 
+				console.log("Rotten Tomatoes Rating: "+JSON.parse(body).Ratings[1].Value);
+			else
+				console.log("Rotten Tomatoes Rating: Not availabe for this movie");
+			console.log("Country: "+JSON.parse(body).Country);
+			console.log("Language: "+JSON.parse(body).Language);
+			console.log("Plot: "+JSON.parse(body).Plot);
+			console.log("Actors: "+JSON.parse(body).Actors);
+  		}	
+		});
+	}
+	
 
 }
 else if(commands[2]==="do-what-it-says"){
