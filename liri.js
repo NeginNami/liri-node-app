@@ -24,22 +24,41 @@ var spotify = new Spotify({
 //console.log(SpotifyKeys.spotifyKeys.secret);
 
 var commands=process.argv;
+var textToAdd="";
 
-if(commands[2]==="my-tweets")
+if(commands[2]==="my-tweets"){
 	myTweets();
+	log(commands[2]);
+}
+	
 
 
-else if(commands[2]==="spotify-this-song")
+else if(commands[2]==="spotify-this-song"){
 	spotifyMySong();
+	for (var i = 2; i < commands.length; i++) 
+		textToAdd=textToAdd+commands[i]+" ";
+	log(textToAdd);
+	textToAdd='';
+}
 
 
-else if(commands[2]==="movie-this")
+
+else if(commands[2]==="movie-this"){
 	imdbMyMovie();
+	for (var i = 2; i < commands.length; i++) 
+		textToAdd=textToAdd+commands[i]+" ";
+	log(textToAdd);
+	textToAdd='';
+}
+	
+
+	
 	
 
 else if(commands[2]==="do-what-it-says"){
 
 		DoWhatItSays();
+		log(commands[2]);	
 
 }
 else{
@@ -157,11 +176,11 @@ function DoWhatItSays() {
 	  if (cmd==="my-tweets") {
 	  	myTweets();
 	  }
-	  if (cmd==="spotify-this-song") {
+	  else if (cmd==="spotify-this-song") {
 	  	process.argv[3]=exp;
 	  	spotifyMySong();
 	  }
-	  if (cmd==="movie-this") {
+	  else if (cmd==="movie-this") {
 	  	process.argv[3]=exp;
 	  	imdbMyMovie();
 	  }
@@ -170,4 +189,20 @@ function DoWhatItSays() {
 
 
 	});
+}
+
+function log(content) {
+	fs.appendFile("log.txt",content+" , ", function(err) {
+
+  // If an error was experienced we say it.
+  if (err) {
+    console.log(err);
+  }
+
+  // If no error is experienced, we'll log the phrase "Content Added" to our node console.
+  else {
+    console.log("Content Added to the log file!");
+  }
+
+});
 }
